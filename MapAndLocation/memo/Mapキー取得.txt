@@ -1,18 +1,18 @@
-Map View��Google Map�̃T�[�r�X�𗘗p���Ă��邽�߁A�A�v���P�[�V�����͒�܂�������@�ɏ]���Ēn�}�f�[�^�𗘗p����K�v��
-����B
-�J���҂͂��̃T�[�r�X�𗘗p���邽�߂�(�A�v���P�[�V�����ɏ�������)�ؖ������T�[�r�X�ɓo�^���A�T�[�r�X���p�K��ɓ��ӂ�����
-�A�v���P�[�V��������Google Map�T�[�r�X�𗘗p����ۂɕK�v��MD5�t�B���K�[�v�����g���擾����B
-Maps API Key-���̉p�����̕�����-�́A�T�[�r�X�ɓo�^�����ؖ����ƊJ���҂���ӂɓ���ł���B
+Map ViewはGoogle Mapのサービスを利用しているため、アプリケーションは定まったお作法に従って地図データを利用する必要が
+ある。
+開発者はこのサービスを利用するために(アプリケーションに署名する)証明書をサービスに登録し、サービス利用規約に同意をして
+アプリケーションからGoogle Mapサービスを利用する際に必要なMD5フィンガープリントを取得する。
+Maps API Key-この英数字の文字列-は、サービスに登録した証明書と開発者を一意に特定できる。
 
-MapView���n�}�f�[�^�𗘗p����ɂ́A���L2�_�̃`�F�b�N�ɒʂ�K�v������
-�E�ؖ����ƊJ���҂��T�[�r�X�ɓo�^����Ă���
-�E�A�v���P�[�V�����ɃT�C������Ă���ؖ����ƁA�T�[�r�X�ɓo�^����Ă���ؖ�������v���Ă��邱��
+MapViewが地図データを利用するには、下記2点のチェックに通る必要がある
+・証明書と開発者がサービスに登録されている
+・アプリケーションにサインされている証明書と、サービスに登録されている証明書が一致していること
 
-���R�Ȃ���قȂ�ؖ����ŃT�C������A�v���P�[�V�����ɂ͈قȂ�Maps API Key���K�v�ɂȂ�B
-�܂��A�f�o�b�O�p�ɗ��p����ؖ����ɑ΂���Maps API Key���ʓr�K�v�ƂȂ�B
+当然ながら異なる証明書でサインするアプリケーションには異なるMaps API Keyが必要になる。
+また、デバッグ用に利用する証明書に対するMaps API Keyも別途必要となる。
 
-�L�[���擾����΁A���C�A�E�g�t�@�C����MapView��`�ӏ��ɑ����uandroid:apiKey�v��API Key��ݒ肷�邱�Ƃ�MapView��
-�n�}�f�[�^��\�����邱�Ƃ��ł���B
+キーを取得すれば、レイアウトファイルのMapView定義箇所に属性「android:apiKey」でAPI Keyを設定することでMapViewに
+地図データを表示することができる。
 -------------------------------------------
 <com.google.android.maps.MapView
  android:layout_width="fill_parent"
@@ -24,53 +24,53 @@ MapView���n�}�f�[�^�𗘗p����ɂ́A���L2�_�̃`�F�b�N�ɒʂ�K�v������
 -------------------------------------------
 
 
-�Ō��AndroidManifest.xml�Ƀ��C�u�����̎Q�ƂƃC���^�[�l�b�g�̎Q�ƌ����ݒ��ǋL���ď��������B
+最後にAndroidManifest.xmlにライブラリの参照とインターネットの参照権限設定を追記して準備完了。
 
 -------------------------------------------
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
  package="com.example.package.name">
  <application android:name="MyApplication" >
-  ...��...
+  ...略...
   <uses-library android:name="com.google.android.maps" />
  </application>
  <uses-permission android:name="android.permission.INTERNET" />
 -------------------------------------------
 
-���L�[�擾�菇(�{�ԗp)
+■キー取得手順(本番用)
 
-1. Google�A�J�E���g�̎擾
+1. Googleアカウントの取得
 
-2. KeyTool�ŏؖ������쐬
- > keytool -genkey -alias <alias��>
+2. KeyToolで証明書を作成
+ > keytool -genkey -alias <alias名>
 
-3. �쐬�����ؖ����̃t�B���K�[�v�����g���m�F
- > keytool -list -alias <alias��>
-  <alias��>, 2008/12/24, keyEntry,
-  �ؖ����̃t�B���K�[�v�����g (MD5): 47:53:57:18:9C:FF:88:C1:11:EE:9F:DA:50:3C:AD:E7
+3. 作成した証明書のフィンガープリントを確認
+ > keytool -list -alias <alias名>
+  <alias名>, 2008/12/24, keyEntry,
+  証明書のフィンガープリント (MD5): 47:53:57:18:9C:FF:88:C1:11:EE:9F:DA:50:3C:AD:E7
 
-4. ���LURL��\�����A���e���m�F
+4. 下記URLを表示し、内容を確認
   http://code.google.com/intl/ja/android/maps-api-signup.html
 
-5. ���e�ɓ��ӂł�����A�uI have read and agree with the terms and conditions �v�Ƀ`�F�b�N����
-   �uMy certificate's MD5 fingerprint�v�̉ӏ���3�Ŏ擾�����ؖ������L�q
+5. 内容に同意できたら、「I have read and agree with the terms and conditions 」にチェックして
+   「My certificate's MD5 fingerprint」の箇所に3で取得した証明書を記述
 
 
-���L�[�擾�菇(�f�o�b�O�p)
-1. Google�A�J�E���g�̎擾
+■キー取得手順(デバッグ用)
+1. Googleアカウントの取得
 
-2. �f�o�b�O�p�L�[�X�g�A�t�@�C�����m�F
-  Windows:  <���[�U�f�B���N�g��>\Local Settings\Application Data\Android\debug.keystore
+2. デバッグ用キーストアファイルを確認
+  Windows:  <ユーザディレクトリ>\Local Settings\Application Data\Android\debug.keystore
   Linux or OSX: ~/.android/debug.keystore
 
-3. �쐬�����ؖ����̃t�B���K�[�v�����g���m�F
- > keytool -list -keystore <�f�o�b�O�p�L�[�X�g�A�t�@�C���̃p�X>
-  <alias��>, 2008/12/24, keyEntry,
-  �ؖ����̃t�B���K�[�v�����g (MD5): 47:53:57:18:9C:FF:88:C1:11:EE:9F:DA:50:3C:AD:E7
+3. 作成した証明書のフィンガープリントを確認
+ > keytool -list -keystore <デバッグ用キーストアファイルのパス>
+  <alias名>, 2008/12/24, keyEntry,
+  証明書のフィンガープリント (MD5): 47:53:57:18:9C:FF:88:C1:11:EE:9F:DA:50:3C:AD:E7
 
-4. ���LURL��\�����A���e���m�F
+4. 下記URLを表示し、内容を確認
   http://code.google.com/intl/ja/android/maps-api-signup.html
 
-5. ���e�ɓ��ӂł�����A�uI have read and agree with the terms and conditions �v�Ƀ`�F�b�N����
-   �uMy certificate's MD5 fingerprint�v�̉ӏ���3�Ŏ擾�����ؖ������L�q
+5. 内容に同意できたら、「I have read and agree with the terms and conditions 」にチェックして
+   「My certificate's MD5 fingerprint」の箇所に3で取得した証明書を記述
 
 
